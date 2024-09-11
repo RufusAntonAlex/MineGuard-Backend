@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 // Path to your service account key file
-const serviceAccountPath = path.join(__dirname, "./serviceAccountKey.json");
+const serviceAccountPath = path.join(__dirname, "serviceAccountKey.json");
 
 // Initialize Firebase Admin SDK with the service account
 admin.initializeApp({
