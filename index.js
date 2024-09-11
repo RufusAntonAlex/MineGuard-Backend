@@ -2,7 +2,6 @@
 const express = require("express");
 const admin = require("firebase-admin");
 const path = require("path");
-require("dotenv").config(); // Load environment variables
 
 // Initialize Express app
 const app = express();
@@ -10,14 +9,14 @@ const app = express();
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Initialize Firebase Admin SDK with the service account from .env
+// Path to your service account key file
+const serviceAccountPath = path.join(__dirname, "serviceAccountKey.json");
+
+// Initialize Firebase Admin SDK with the service account
 admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-  }),
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  credential: admin.credential.cert(require(serviceAccountPath)),
+  databaseURL:
+    "https://minetest-16ba8-default-rtdb.asia-southeast1.firebasedatabase.app", // Replace with your database URL
 });
 
 // Get a reference to the database service
@@ -84,7 +83,7 @@ app.post("/profiles/:profileId", (req, res) => {
 });
 
 app.post("/mainlogs/:logid", (req, res) => {
-  const logid = req.params.logid; // The specific date for the attendance
+  const logid = req.params.Logid; // The specific date for the attendance
   const logData = req.body;
 
   const logRef = db.ref(`mines/MainLogs`);
